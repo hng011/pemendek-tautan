@@ -1,5 +1,5 @@
 import express, { Application } from 'express';
-import linkRoutes from './routes/link.routes'
+import linkRoutes from './routes/link.route';
 
 
 const app: Application = express();

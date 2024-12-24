@@ -18,7 +18,7 @@ router.get("/", (req:Request, res:Response) => {
 
 router.get("/getLinks", getLinks);
 router.get("/:id", redirectURL);
-router.post("/shorten", shortenURL);
+router.post("/shortenURL", shortenURL);
 router.put("/updLink/:id", updLink)
 router.delete("/delLink/:id", delLink)
 

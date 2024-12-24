@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Link from '../models/link.model';
+import LinkService from '../services/link.services';
 import dotenv from 'dotenv';
 
 
@@ -7,50 +7,63 @@ dotenv.config();
 
 
 export const getLinks = async (req: Request, res: Response) => {
-    res.json(await Link.findAll());
+    try {
+        const links = await LinkService.fetcher();
+        res.status(200).send({
+            success: true,
+            data: links,
+        });
+    } catch (err) {
+        res.status(400).send({
+            sucess: false,
+            message: (err as Error).message,
+        });
+    }
 }
 
 
 export const shortenURL = async (req: Request, res: Response) => {
     const { url } = req.body;
-    const baseURL = process.env.BASE_URL || `http://localhost:${process.env.PORT}`;
     
     if (!url) {
         res.status(400).send({
-            'error': "MISSING URL"
+            success: false,
+            message: "Missing URL",
         });
-    }
-
-    try {
-        const newLink = await Link.create({ url });
-        res.status(201).send({
-            shortenedURL: `${baseURL}/${newLink.id}`
-        });
-
-    } catch (err) {
-        res.status(500).send({
-            err: `Failed to shorten URL\n{err}`
-        })
+    } else {
+        try {
+            const shortenedURL = await LinkService.shortener(url);
+            res.status(201).send({
+                success: true,
+                message: shortenedURL,
+            });
+        } catch (err) {
+            res.status(400).send({
+                sucess: false,
+                message: (err as Error).message,
+            });
+        }
     }
 };
 
 
 export const redirectURL = async (req: Request, res: Response) => {
     const { id } = req.params;
-
-    try{
-        const link = await Link.findByPk(id);
-        if (link) {
-            res.redirect(link.url   );
-        } else {
-            res.status(404).send({
-                err: "Link not found"
+    
+    if (!id) {
+        res.status(400).send({
+            success: false,
+            message: "Missing URL",
+        });
+    } else {
+        try {
+            return res.redirect(await LinkService.redirector(id))
+        } catch (err) {
+            res.send({
+                success: false,
+                message: (err as Error).message,
             });
         }
-    } catch (err) {
-        res.status(500).send({
-            err: `Failed to retrieve URL`
-        });
     }
 };
 
@@ -58,35 +71,46 @@ export const redirectURL = async (req: Request, res: Response) => {
 export const updLink = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { url } = req.body;
-    const record = await Link.findByPk(id);
 
-    if (!record) {
-        res.status(404).send({
-            err: "Link not found"
+    if (!id || !url) {
+        res.status(400).send({
+            success: false,
+            message: "Missing ID or URL"
         });
     } else {
-        record.url = url != null ? url : record.url;
-        record.save();
-
-        res.status(200).send({
-            message: `Link with ID: ${id} was successfully updated`
-        });
+        try {
+            const updated = await LinkService.updater(id, url);
+            res.status(200).json(updated);
+        } catch (err) {
+            res.send({
+                success: false,
+                message: (err as Error).message, 
+            });
+        }
     }
 }
 
 
 export const delLink = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const record = await Link.findByPk(id);
     
-    if (!record) {
-        res.status(404).send({
-            err: "Link not found"
+    if (!id) {
+        res.status(400).send({
+            success: false,
+            message: "Missing ID or URL"
         });
     } else {
-        record.destroy();
-        res.status(200).send({
-            message: `Link with ID: ${id} was successfully deleted`
-        });
+        try {
+            await LinkService.deleter(id);
+            res.status(200).send({
+                success: true,
+                message: `Successfully deleted link with id: ${id}`
+            });
+        } catch (err) {
+            res.send({
+                success: false,
+                message: (err as Error).message 
+            });
+        }
     }
 }
