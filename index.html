@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemendek Tautan</title>
+    <link rel="stylesheet" href="style/index.css">
+</head>
+<body>
+
+    <div id="mainbody">
+        <center>
+            <div>
+                <h1 id="labelinput">l1nking 🔗</h1>
+                <pre id="version"></pre>
+            </div>
+            <div>
+                <select name="mode" id="mode" onchange="checkmode()">
+                    <option value="shortener">Pendekkan</option>
+                    <option value="editlink">Perubahan</option>
+                    <option value="deletelink">Penghilangan</option>
+                    <option value="all">Melihat Keseluruhan</option>
+                </select>
+            </div>
+            <div id="input-box">
+                <input type="text" id="userinput" class='input-box'>
+                <input type='text' id='new-original-link' class='input-box hidden'/>
+                <input type='text' id='cred-see-all' class='input-box hidden'/>
+            </div>
+            <div>
+                <input id="btn-submit" type="submit" value="penetrasi" class="btn-ok">
+            </div>
+            <div>
+                <p>
+                    <a id="shortenedlink"></a>
+                </p>
+            </div>
+        </center>
+    </div>
+
+    <script src="js/index.js"></script>
+</body>
+</html>
