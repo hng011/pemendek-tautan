@@ -26,24 +26,24 @@ jobs:
         docker build -t ${{ secrets.ARTIFACTS_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.ARTIFACTS_REPO }}/${{ secrets.ARTIFACTS_IMAGE }}:${{ github.sha }} ./belakang/
         docker push ${{ secrets.ARTIFACTS_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.ARTIFACTS_REPO }}/${{ secrets.ARTIFACTS_IMAGE }}:${{ github.sha }}
 
-    # - name: Deploy to Cloud Run
-    #   id: deploy
-    #   uses: google-github-actions/deploy-cloudrun@v0
-    #   with:
-    #     service: ${{ secrets.CRUN_NAME }} # cloudrun service name
-    #     region: ${{ secrets.CRUN_REGION }}  # cloudrun region | mine same with artifacts
+    - name: Deploy to Cloud Run
+      id: deploy
+      uses: google-github-actions/deploy-cloudrun@v0
+      with:
+        service: ${{ secrets.CRUN_NAME }} # cloudrun service name
+        region: ${{ secrets.CRUN_REGION }}  # cloudrun region | mine same with artifacts
 
-    #     # NOTE: If using a pre-built image, update the image name above
-    #     image: ${{ secrets.ARTIFACTS_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.ARTIFACTS_REPO }}/${{ secrets.ARTIFACTS_IMAGE }}:${{ github.sha }}
+        # NOTE: If using a pre-built image, update the image name above
+        image: ${{ secrets.ARTIFACTS_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.ARTIFACTS_REPO }}/${{ secrets.ARTIFACTS_IMAGE }}:${{ github.sha }}
         
-    #     # NOTE: You can also set env variables here:
-    #     env_vars: |
-    #       VERSION=${{ secrets.VERSION }}
-    #       DB_URL=${{ secrets.DB_URL }}
+        # NOTE: You can also set env variables here:
+        env_vars: |
+          VERSION=${{ secrets.VERSION }}
+          DB_URL=${{ secrets.DB_URL }}
 
-    #       ALLOW_ORIGINS=${{ secrets.ALLOW_ORIGINS }}
-    #       ALLOW_CREDENTIALS=${{ secrets.ALLOW_CREDENTIALS }}
-    #       ALLOW_METHODS=${{ secrets.ALLOW_METHODS }}
-    #       ALLOW_HEADERS=${{ secrets.ALLOW_HEADERS }}
+          ALLOW_ORIGINS=${{ secrets.ALLOW_ORIGINS }}
+          ALLOW_CREDENTIALS=${{ secrets.ALLOW_CREDENTIALS }}
+          ALLOW_METHODS=${{ secrets.ALLOW_METHODS }}
+          ALLOW_HEADERS=${{ secrets.ALLOW_HEADERS }}
 
-    #       CRED_GET_ALL_DATA=${{ secrets.CRED_GET_ALL_DATA }}
+          CRED_GET_ALL_DATA=${{ secrets.CRED_GET_ALL_DATA }}
