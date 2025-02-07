@@ -1,0 +1,52 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    animation: bgColorChange 5s infinite alternate linear;
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+#mainbody {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+#labelinput {
+    margin: 0;
+    padding: 0;
+}
+
+.input-box, #mode {
+    width: 200px;
+    padding: 3%;
+    margin: 0;
+}
+
+#btn-submit {
+    border-radius: 30px;
+    padding: 5%;
+    width: 100px;
+}
+
+.btn-ok:hover {
+    cursor: pointer;
+}
+
+@keyframes bgColorChange {
+    0% { background-color: #ff4d4d; }
+    50% { background-color: #4d79ff; }
+    100% { background-color: #4dff88; }
+}
+
+.hidden {
+    display: none;
+}

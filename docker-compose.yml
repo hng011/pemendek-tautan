@@ -1,0 +1,10 @@
+services:
+  depan:
+    build: ./depan
+    ports:
+      - "80:80"
+
+  belakang:
+    build: ./belakang
+    ports:
+      - "8000:8000"
