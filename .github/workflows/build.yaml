@@ -34,7 +34,7 @@ jobs:
         region: ${{ secrets.CRUN_REGION }}  # cloudrun region | mine same with artifacts
 
         # NOTE: If using a pre-built image, update the image name above
-        image: ${{ secrets.ARTIFACTS_REGION }}/${{ secrets.PROJECT_ID }}/${{ secrets.ARTIFACTS_REPO }}/${{ secrets.ARTIFACTS_IMAGE }}:${{ github.sha }}
+        image: ${{ secrets.ARTIFACTS_REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.ARTIFACTS_REPO }}/${{ secrets.ARTIFACTS_IMAGE }}:${{ github.sha }}
         
         # NOTE: You can also set env variables here:
         env_vars: |
