@@ -9,7 +9,7 @@ const shortened_field   = document.getElementById("shortenedlink");
 
 let state_mode = 0;
 const msg = ["input ur plain link", "input the short code of your link", "put your new original link", "password"];
-window.API_URL = null;
+window.API_URL = "https://pemtat-17247128873.us-central1.run.app/";
 field_input.placeholder = msg[0]
 
 
