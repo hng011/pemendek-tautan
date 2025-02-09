@@ -21,6 +21,10 @@ async def get_all_links(req: PayloadGetAllLinks, request: Request, session: Sess
 @shortener_router.post("/memendek")
 async def generate_short_link(req: PayloadAddData, request: Request, session:Session = Depends(get_session)):
     
+    url_pattern = re.compile(r'^http(s?):\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/.*)?$')  
+    if not url_pattern.match(req.original_link):
+        return {"status":"err", "msg": f"invalid link", "code":"pattern error"}
+    
     link = session.exec(select(Link).where(Link.original == req.original_link)).first() 
 
     if (link):
