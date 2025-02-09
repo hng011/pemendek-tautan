@@ -87,7 +87,7 @@ btn_submit.addEventListener("click", () => {
 
 const perpendek = async (original_link) => {
 
-    const url_pattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/.*)?$/;
+    const url_pattern = /^http(s?):\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/.*)?$/;
 
     if (!(original_link)) {
         alert("Woi");
@@ -108,6 +108,8 @@ const perpendek = async (original_link) => {
 
         if (r.status === "success") {
             alert("success yeee");
+            shortened_field.innerText = r.msg;
+        } else if(r.code === "pattern error") {
             shortened_field.innerText = r.msg;
         } else {
             shortened_field.innerText = r.msg + " | " + r.short_link;
