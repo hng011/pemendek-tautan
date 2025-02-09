@@ -3,7 +3,7 @@ from . import *
 
 load_dotenv()
 shortener_router = APIRouter()
-
+url_pattern = re.compile(r'^http(s?):\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/.*)?$')  
 
 @shortener_router.get("/")
 async def root():
@@ -20,10 +20,9 @@ async def get_all_links(req: PayloadGetAllLinks, request: Request, session: Sess
 
 @shortener_router.post("/memendek")
 async def generate_short_link(req: PayloadAddData, request: Request, session:Session = Depends(get_session)):
-    
-    url_pattern = re.compile(r'^http(s?):\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/.*)?$')  
+      
     if not url_pattern.match(req.original_link):
-        return {"status":"err", "msg": f"invalid link", "code":"pattern error"}
+        return {"status":"err", "msg": "invalid link"}
     
     link = session.exec(select(Link).where(Link.original == req.original_link)).first() 
 
@@ -54,6 +53,9 @@ async def redirect_original(short_link:str, session:Session = Depends(get_sessio
 
 @shortener_router.put("/mengubah")
 async def update_link(req: PayloadUpdateOriginalLink, request: Request, session:Session = Depends(get_session)):
+    
+    if not url_pattern.match(req.new_original_link):
+        return {"status":"err", "msg": "invalid link"}
     
     link:Link = session.exec(
         select(Link).where(Link.short == req.link_code)

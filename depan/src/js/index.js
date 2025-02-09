@@ -9,6 +9,7 @@ const shortened_field   = document.getElementById("shortenedlink");
 
 let state_mode = 0;
 const msg = ["input ur plain link", "input the short code of your link", "put your new original link", "password"];
+const url_pattern = /^http(s?):\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/.*)?$/;
 window.API_URL = null;
 field_input.placeholder = msg[0]
 
@@ -87,8 +88,6 @@ btn_submit.addEventListener("click", () => {
 
 const perpendek = async (original_link) => {
 
-    const url_pattern = /^http(s?):\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d{1,5})?(\/.*)?$/;
-
     if (!(original_link)) {
         alert("Woi");
     } else if (!(url_pattern.test(original_link))) {
@@ -109,10 +108,8 @@ const perpendek = async (original_link) => {
         if (r.status === "success") {
             alert("success yeee");
             shortened_field.innerText = r.msg;
-        } else if(r.code === "pattern error") {
-            shortened_field.innerText = r.msg;
         } else {
-            shortened_field.innerText = r.msg + " | " + r.short_link;
+            shortened_field.innerText = r.msg + " | " + r.short_link ? r.short_link : '';
         }
     }
 
@@ -123,6 +120,8 @@ const editdata = async (short_code, new_ori_link) => {
 
     if (!(short_code || new_ori_link)) {
         alert("Woi");
+    } else if(!(url_pattern.test(original_link))) {
+        alert("Woi linky")
     } else {
         let r = await fetch( (url + ep[1]) , {
             method: "PUT",
@@ -139,7 +138,7 @@ const editdata = async (short_code, new_ori_link) => {
 
         if (r.status === "success") {
             alert("success yeee");
-            shortened_field.innerText = r.msg + " | " + r.short_link;
+            shortened_field.innerText = r.msg + " | " + r.short_link ? r.short_link : '';
         } else {
             alert(r.msg);
         }
